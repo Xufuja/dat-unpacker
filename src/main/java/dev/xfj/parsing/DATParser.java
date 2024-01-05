@@ -41,7 +41,7 @@ public class DATParser extends Parser {
 
             for (int i = 0; i < header.getFileCount(); i++) {
                 FileInfo fileInfo = parseFileInfo(i, header.getFileTableOffset(), header.getExtensionTableOffset(), header.getNameTableOffset(), header.getSizeTableOffset());
-                extractFile(directory, fileInfo.getFileName(), fileInfo.getFileOffset(), fileInfo.getSize());
+                extractFile(directory, String.format("[%1$s] %2$s", fileInfo.getFileOffset(), fileInfo.getFileName()), fileInfo.getFileOffset(), fileInfo.getSize());
             }
         }
     }
@@ -110,10 +110,7 @@ public class DATParser extends Parser {
         byte[] array = getSlice(fileOffset, size);
         try {
             Files.createDirectories(directory);
-            Path out = Paths.get(String.valueOf(directory), fileName);
-           
-
-            Files.write(out, array);
+            Files.write(Paths.get(String.valueOf(directory), fileName), array);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

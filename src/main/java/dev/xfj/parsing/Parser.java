@@ -74,6 +74,7 @@ public abstract class Parser {
         byteBuffer.limit(offset + length);
         byte[] array = new byte[length];
         byteBuffer.get(array);
+        byteBuffer.limit(byteBuffer.capacity());
         return array;
     }
 }
