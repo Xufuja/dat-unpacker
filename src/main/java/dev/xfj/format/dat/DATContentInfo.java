@@ -1,6 +1,6 @@
-package dev.xfj.format;
+package dev.xfj.format.dat;
 
-public class FileInfo {
+public class DATContentInfo {
     private int fileOffset;
     private String extension;
     private int size;

@@ -1,6 +1,6 @@
-package dev.xfj.format;
+package dev.xfj.format.dat;
 
-public class Header {
+public class DATContentHeader {
     private byte magicOne;
     private byte magicTwo;
     private byte magicThree;
