@@ -4,6 +4,7 @@ package dev.xfj.parsing;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -59,6 +60,24 @@ public abstract class Parser {
         float result = byteBuffer.getFloat(offset);
         this.offset += Float.BYTES;
         return result;
+    }
+
+    protected String getFixedString(int start, int length, Charset charset) {
+        int end = start + length;
+        byte[] result = new byte[length];
+        for (int i = start; i < end; i++) {
+            int resultIndex = i - start;
+            result[resultIndex] = bytes[i];
+            //System.out.println(result[resultIndex]);
+        }
+        //System.out.println("End of Byte Range");
+        offset += length;
+        ByteBuffer buffer = ByteBuffer.wrap(result);
+        return charset.decode(buffer).toString();
+    }
+
+    protected String getFixedString(int length, Charset charset) {
+        return getFixedString(offset, length, charset);
     }
 
     protected int getOffset() {
