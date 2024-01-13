@@ -57,7 +57,7 @@ public class DATParser extends Parser {
         setOffset(fileTableOffset + index * 4);
         datContentInfo.setFileOffset(getInt32());
         setOffset(extensionTableOffset + index * 4);
-        datContentInfo.setExtension(getFixedString(4, StandardCharsets.UTF_8));
+        datContentInfo.setExtension(getFixedString(4));
         setOffset(sizeTableOffset + index * 4);
         datContentInfo.setSize(getInt32());
         setOffset(nameTableOffset);

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -74,6 +75,10 @@ public abstract class Parser {
         offset += length;
         ByteBuffer buffer = ByteBuffer.wrap(result);
         return charset.decode(buffer).toString();
+    }
+
+    protected String getFixedString(int length) {
+        return getFixedString(offset, length, StandardCharsets.UTF_8);
     }
 
     protected String getFixedString(int length, Charset charset) {

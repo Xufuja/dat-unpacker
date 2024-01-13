@@ -3,8 +3,8 @@ package dev.xfj.format.wta;
 public class WTATextureData {
     private int wtaTextureOffset;
     private int wtaTextureSize;
-    private int wtaTextureIdentifier;
-    private int unknownArray1;
+    private String wtaTextureIdentifier;
+    private String unknownArray1;
 
     public int getWtaTextureOffset() {
         return wtaTextureOffset;
@@ -22,19 +22,19 @@ public class WTATextureData {
         this.wtaTextureSize = wtaTextureSize;
     }
 
-    public int getWtaTextureIdentifier() {
+    public String getWtaTextureIdentifier() {
         return wtaTextureIdentifier;
     }
 
-    public void setWtaTextureIdentifier(int wtaTextureIdentifier) {
+    public void setWtaTextureIdentifier(String wtaTextureIdentifier) {
         this.wtaTextureIdentifier = wtaTextureIdentifier;
     }
 
-    public int getUnknownArray1() {
+    public String getUnknownArray1() {
         return unknownArray1;
     }
 
-    public void setUnknownArray1(int unknownArray1) {
+    public void setUnknownArray1(String unknownArray1) {
         this.unknownArray1 = unknownArray1;
     }
 

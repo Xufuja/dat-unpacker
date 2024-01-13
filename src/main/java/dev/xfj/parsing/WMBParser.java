@@ -1,0 +1,56 @@
+package dev.xfj.parsing;
+
+import dev.xfj.format.wmb.WMBHeader;
+
+import java.io.IOException;
+import java.nio.file.Path;
+
+public class WMBParser extends Parser {
+    public WMBParser(Path path) throws IOException {
+        super(path);
+    }
+
+    public WMBHeader parse() {
+        WMBHeader wmbHeader = new WMBHeader();
+
+        wmbHeader.setMagicValue(getFixedString(4));
+        wmbHeader.setVersion(String.format("%08x", getInt32()));
+        wmbHeader.setUnknown8(getInt32());
+        wmbHeader.setFlags(getInt32());
+        wmbHeader.setBoundingBox1(getFloat());
+        wmbHeader.setBoundingBox2(getFloat());
+        wmbHeader.setBoundingBox3(getFloat());
+        wmbHeader.setBoundingBox4(getFloat());
+        wmbHeader.setBoundingBox5(getFloat());
+        wmbHeader.setBoundingBox6(getFloat());
+        wmbHeader.setBoneArrayOffset(getInt32());
+        wmbHeader.setBoneCount(getInt32());
+        wmbHeader.setOffsetBoneIndexTranslationTable(getInt32());
+        wmbHeader.setBoneIndexTranslationTableSize(getInt32());
+        wmbHeader.setVertexGroupArrayOffset(getInt32());
+        wmbHeader.setVertexGroupCount(getInt32());
+        wmbHeader.setMeshArrayOffset(getInt32());
+        wmbHeader.setMeshCount(getInt32());
+        wmbHeader.setMeshGroupInfoArrayHeaderOffset(getInt32());
+        wmbHeader.setMeshGroupInfoArrayCount(getInt32());
+        wmbHeader.setColTreeNodesOffset(getInt32());
+        wmbHeader.setColTreeNodesCount(getInt32());
+        wmbHeader.setBoneMapOffset(getInt32());
+        wmbHeader.setBoneMapCount(getInt32());
+        wmbHeader.setBoneSetOffset(getInt32());
+        wmbHeader.setBoneSetCount(getInt32());
+        wmbHeader.setMaterialArrayOffset(getInt32());
+        wmbHeader.setMaterialCount(getInt32());
+        wmbHeader.setMeshGroupOffset(getInt32());
+        wmbHeader.setMeshGroupCount(getInt32());
+        wmbHeader.setOffsetMeshMaterials(getInt32());
+        wmbHeader.setNumMeshMaterials(getInt32());
+        wmbHeader.setUnknownWorldDataArrayOffset(getInt32());
+        wmbHeader.setUnknownWorldDataArrayCount(getInt32());
+        wmbHeader.setUnknown8C(getInt32());
+
+        System.out.println(wmbHeader);
+
+        return wmbHeader;
+    }
+}

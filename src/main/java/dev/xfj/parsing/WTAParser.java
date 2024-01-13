@@ -17,7 +17,7 @@ public class WTAParser extends Parser {
     public WTAFile parse() {
         WTAFile wtaFile = new WTAFile();
 
-        wtaFile.setMagicValue(getFixedString(4, StandardCharsets.UTF_8));
+        wtaFile.setMagicValue(getFixedString(4));
         wtaFile.setUnknown4(getInt32());
         wtaFile.setTextureCount(getInt32());
         wtaFile.setTextureOffsetArrayOffset(getInt32());
@@ -42,9 +42,9 @@ public class WTAParser extends Parser {
             setOffset(wtaFile.getTextureSizeArrayOffset() + i * 4);
             textureData.setWtaTextureSize(getInt32());
             setOffset(wtaFile.getTextureIdentifierArrayOffset() + i * 4);
-            textureData.setWtaTextureIdentifier(getInt32());
+            textureData.setWtaTextureIdentifier(String.format("%08x", getInt32()));
             setOffset(wtaFile.getUnknownArrayOffset1() + i * 4);
-            textureData.setUnknownArray1(getInt32()); //TODO: convert to Hex
+            textureData.setUnknownArray1(String.format("%08x", getInt32()));
 
             data.add(textureData);
         }
