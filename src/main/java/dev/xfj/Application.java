@@ -4,7 +4,6 @@ import dev.xfj.extracting.DATExtractor;
 import dev.xfj.format.dat.DATFile;
 import dev.xfj.parsing.DATParser;
 import dev.xfj.parsing.WMBParser;
-import dev.xfj.parsing.WTAParser;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,7 +20,7 @@ public class Application {
             //WTAParser wtaParser = new WTAParser(Paths.get("pl010d", "[976] pl010d.wta"));
             //wtaParser.parse();
 
-            WMBParser wmbParser = new WMBParser(Paths.get("pl010d", "[976] pl010d.wta"));
+            WMBParser wmbParser = new WMBParser(Paths.get("pl010d", "[36452768] pl010d.wmb"));
             wmbParser.parse();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

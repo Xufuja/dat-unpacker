@@ -1,16 +1,28 @@
 package dev.xfj.parsing;
 
+import dev.xfj.format.wmb.WMBFile;
 import dev.xfj.format.wmb.WMBHeader;
+import dev.xfj.format.wmb.WMBMaterial;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class WMBParser extends Parser {
     public WMBParser(Path path) throws IOException {
         super(path);
     }
 
-    public WMBHeader parse() {
+    public WMBFile parse() {
+        WMBFile wmbFile = new WMBFile();
+        wmbFile.setWmbHeader(parseHeader());
+        wmbFile.setWmbMaterials(IntStream.range(0, wmbFile.getWmbHeader().getMaterialCount()).mapToObj(i -> parseMaterial(i, wmbFile)).collect(Collectors.toList()));
+
+        return wmbFile;
+    }
+
+    public WMBHeader parseHeader() {
         WMBHeader wmbHeader = new WMBHeader();
 
         wmbHeader.setMagicValue(getFixedString(4));
@@ -52,5 +64,47 @@ public class WMBParser extends Parser {
         System.out.println(wmbHeader);
 
         return wmbHeader;
+    }
+
+    public WMBMaterial parseMaterial(int index, WMBFile wmbFile) {
+        setOffset(wmbFile.getWmbHeader().getMaterialArrayOffset() + index * 0x30);
+
+        WMBMaterial wmbMaterial = new WMBMaterial();
+        wmbMaterial.setUnknown1(getInt16());
+        wmbMaterial.setUnknown2(getInt16());
+        wmbMaterial.setUnknown3(getInt16());
+        wmbMaterial.setUnknown4(getInt16());
+        wmbMaterial.setMaterialNameOffset(getInt32());
+        wmbMaterial.setEffectNameOffset(getInt32());
+        wmbMaterial.setTechniqueNameOffset(getInt32());
+        wmbMaterial.setUnknown5(getInt32());
+        wmbMaterial.setTextureOffset(getInt32());
+        wmbMaterial.setTextureNum(getInt32());
+        wmbMaterial.setParameterGroupsOffset(getInt32());
+        wmbMaterial.setNumParameterGroups(getInt32());
+        wmbMaterial.setVarOffset(getInt32());
+        wmbMaterial.setVarNum(getInt32());
+        setOffset(wmbMaterial.getMaterialNameOffset());
+        wmbMaterial.setMaterialName(getFixedString(256));
+        setOffset(wmbMaterial.getEffectNameOffset());
+        wmbMaterial.setEffectName(getFixedString(256));
+        setOffset(wmbMaterial.getTechniqueNameOffset());
+        wmbMaterial.setTechniqueName(getFixedString(256));
+
+        for (int i = 0; i < wmbMaterial.getTextureNum(); i++) {
+            setOffset(wmbMaterial.getTextureOffset() + i * 8);
+            int offset = getInt32();
+            System.out.println(offset);
+            String identifier = String.format("%08x", getInt32());
+            System.out.println(identifier);
+            setOffset(offset);
+            String textureTypeName = getFixedString(256);
+            System.out.println(textureTypeName);
+
+        }
+
+        System.out.println(wmbMaterial);
+
+        return wmbMaterial;
     }
 }
