@@ -1,5 +1,6 @@
 package dev.xfj.parsing;
 
+import dev.xfj.format.wmb.WMBBone;
 import dev.xfj.format.wmb.WMBFile;
 import dev.xfj.format.wmb.WMBHeader;
 import dev.xfj.format.wmb.WMBMaterial;
@@ -17,6 +18,8 @@ public class WMBParser extends Parser {
     public WMBFile parse() {
         WMBFile wmbFile = new WMBFile();
         wmbFile.setWmbHeader(parseHeader());
+        setOffset(wmbFile.getWmbHeader().getBoneArrayOffset());
+        wmbFile.setWmbBones(IntStream.range(0, wmbFile.getWmbHeader().getBoneCount()).mapToObj(bone -> parseBone()).collect(Collectors.toList()));
         wmbFile.setWmbMaterials(IntStream.range(0, wmbFile.getWmbHeader().getMaterialCount()).mapToObj(i -> parseMaterial(i, wmbFile)).collect(Collectors.toList()));
 
         return wmbFile;
@@ -64,6 +67,38 @@ public class WMBParser extends Parser {
         System.out.println(wmbHeader);
 
         return wmbHeader;
+    }
+
+    public WMBBone parseBone() {
+        WMBBone wmbBone = new WMBBone();
+
+        wmbBone.setBoneNumber(getInt16());
+        wmbBone.setParentIndex(getInt16());
+        wmbBone.setPositionX(getFloat());
+        wmbBone.setPositionY(getFloat());
+        wmbBone.setPositionZ(getFloat());
+        wmbBone.setRotationX(getFloat());
+        wmbBone.setRotationY(getFloat());
+        wmbBone.setRotationZ(getFloat());
+        wmbBone.setScaleX(getFloat());
+        wmbBone.setScaleY(getFloat());
+        wmbBone.setScaleZ(getFloat());
+        wmbBone.setWorldPositionX(getFloat());
+        wmbBone.setWorldPositionY(getFloat());
+        wmbBone.setWorldPositionZ(getFloat());
+        wmbBone.setWorldRotationX(getFloat());
+        wmbBone.setWorldRotationY(getFloat());
+        wmbBone.setWorldRotationZ(getFloat());
+        wmbBone.setWorldScaleX(getFloat());
+        wmbBone.setWorldScaleY(getFloat());
+        wmbBone.setWorldScaleZ(getFloat());
+        wmbBone.setWorldPositionTPoseX(getFloat());
+        wmbBone.setWorldPositionTPoseY(getFloat());
+        wmbBone.setWorldPositionTPoseZ(getFloat());
+
+        System.out.println(wmbBone);
+
+        return wmbBone;
     }
 
     public WMBMaterial parseMaterial(int index, WMBFile wmbFile) {
