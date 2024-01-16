@@ -1,5 +1,7 @@
 package dev.xfj.parsing;
 
-public interface Parser<T> {
-    T parse();
+import dev.xfj.format.File;
+
+public interface Parser {
+    File parse();
 }

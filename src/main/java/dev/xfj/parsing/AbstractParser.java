@@ -1,6 +1,8 @@
 package dev.xfj.parsing;
 
 
+import dev.xfj.format.File;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

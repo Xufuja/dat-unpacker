@@ -1,8 +1,10 @@
 package dev.xfj.format.wmb;
 
+import dev.xfj.format.File;
+
 import java.util.List;
 
-public class WMBFile {
+public class WMBFile implements File {
     private WMBHeader wmbHeader;
     private List<WMBBone> wmbBones;
     private List<WMBMeshGroupInfo> wmbMeshGroupInformation;

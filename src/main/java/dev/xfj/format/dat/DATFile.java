@@ -1,8 +1,10 @@
 package dev.xfj.format.dat;
 
+import dev.xfj.format.File;
+
 import java.util.List;
 
-public class DATFile {
+public class DATFile implements File {
     private DATContentHeader header;
     private List<DATContentInfo> fileInfo;
     private List<DATContent> content;

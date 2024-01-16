@@ -1,8 +1,10 @@
 package dev.xfj.format.wta;
 
+import dev.xfj.format.File;
+
 import java.util.List;
 
-public class WTAFile {
+public class WTAFile implements File {
     private String magicValue;
     private int unknown4;
     private int textureCount;
