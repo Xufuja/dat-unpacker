@@ -9,11 +9,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class WMBParser extends Parser {
+public class WMBParser extends AbstractParser {
     public WMBParser(Path path) throws IOException {
         super(path);
     }
 
+    @Override
     public WMBFile parse() {
         WMBFile wmbFile = new WMBFile();
         wmbFile.setWmbHeader(parseHeader());

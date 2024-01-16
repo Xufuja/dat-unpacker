@@ -8,13 +8,14 @@ import java.nio.file.Path;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class DATParser extends Parser {
+public class DATParser extends AbstractParser {
     private static int nameOffset;
 
     public DATParser(Path path) throws IOException {
         super(path);
     }
 
+    @Override
     public DATFile parse() {
         //Used for both DAT and DTT files
         DATFile datFile = new DATFile();

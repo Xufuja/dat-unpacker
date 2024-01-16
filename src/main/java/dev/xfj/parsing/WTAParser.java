@@ -4,16 +4,16 @@ import dev.xfj.format.wta.WTAFile;
 import dev.xfj.format.wta.WTATextureData;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WTAParser extends Parser {
+public class WTAParser extends AbstractParser {
     public WTAParser(Path path) throws IOException {
         super(path);
     }
 
+    @Override
     public WTAFile parse() {
         WTAFile wtaFile = new WTAFile();
 
