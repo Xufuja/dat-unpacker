@@ -78,7 +78,7 @@ public class DATParser extends Parser {
 
         setOffset(nameOffset);
 
-        datContentInfo.setFileName(getFixedString(nameOffset, datContentInfo.getFileNameAlignment(), StandardCharsets.US_ASCII).split("\0")[0]);
+        datContentInfo.setFileName(getFixedString(nameOffset, datContentInfo.getFileNameAlignment(), StandardCharsets.US_ASCII));
         nameOffset = getOffset();
 
         System.out.println(datContentInfo);

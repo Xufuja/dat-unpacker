@@ -74,7 +74,7 @@ public abstract class Parser {
         //System.out.println("End of Byte Range");
         offset += length;
         ByteBuffer buffer = ByteBuffer.wrap(result);
-        return charset.decode(buffer).toString();
+        return charset.decode(buffer).toString().split("\0")[0];
     }
 
     protected String getFixedString(int length) {

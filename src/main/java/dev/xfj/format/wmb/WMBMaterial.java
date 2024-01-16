@@ -1,5 +1,7 @@
 package dev.xfj.format.wmb;
 
+import java.util.Map;
+
 public class WMBMaterial {
     private short unknown1;
     private short unknown2;
@@ -18,6 +20,7 @@ public class WMBMaterial {
     private String materialName;
     private String effectName;
     private String techniqueName;
+    private Map<String, String> textureArray;
 
     public short getUnknown1() {
         return unknown1;
@@ -155,6 +158,14 @@ public class WMBMaterial {
         this.techniqueName = techniqueName;
     }
 
+    public Map<String, String> getTextureArray() {
+        return textureArray;
+    }
+
+    public void setTextureArray(Map<String, String> textureArray) {
+        this.textureArray = textureArray;
+    }
+
     @Override
     public String toString() {
         return "WMBMaterial{" +
@@ -175,6 +186,7 @@ public class WMBMaterial {
                 ", materialName='" + materialName + '\'' +
                 ", effectName='" + effectName + '\'' +
                 ", techniqueName='" + techniqueName + '\'' +
+                ", textureArray=" + textureArray +
                 '}';
     }
 }

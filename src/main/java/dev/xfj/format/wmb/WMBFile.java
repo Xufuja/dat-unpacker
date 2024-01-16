@@ -5,6 +5,7 @@ import java.util.List;
 public class WMBFile {
     private WMBHeader wmbHeader;
     private List<WMBBone> wmbBones;
+    private List<WMBMeshGroupInfo> wmbMeshGroupInformation;
     private List<WMBMeshGroup> wmbMeshGroups;
     private List<WMBMaterial> wmbMaterials;
 
@@ -22,6 +23,14 @@ public class WMBFile {
 
     public void setWmbBones(List<WMBBone> wmbBones) {
         this.wmbBones = wmbBones;
+    }
+
+    public List<WMBMeshGroupInfo> getWmbMeshGroupInformation() {
+        return wmbMeshGroupInformation;
+    }
+
+    public void setWmbMeshGroupInformation(List<WMBMeshGroupInfo> wmbMeshGroupInformation) {
+        this.wmbMeshGroupInformation = wmbMeshGroupInformation;
     }
 
     public List<WMBMeshGroup> getWmbMeshGroups() {
