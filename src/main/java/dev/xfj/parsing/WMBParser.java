@@ -1,9 +1,6 @@
 package dev.xfj.parsing;
 
-import dev.xfj.format.wmb.WMBBone;
-import dev.xfj.format.wmb.WMBFile;
-import dev.xfj.format.wmb.WMBHeader;
-import dev.xfj.format.wmb.WMBMaterial;
+import dev.xfj.format.wmb.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -20,7 +17,8 @@ public class WMBParser extends Parser {
         wmbFile.setWmbHeader(parseHeader());
         setOffset(wmbFile.getWmbHeader().getBoneArrayOffset());
         wmbFile.setWmbBones(IntStream.range(0, wmbFile.getWmbHeader().getBoneCount()).mapToObj(bone -> parseBone()).collect(Collectors.toList()));
-        wmbFile.setWmbMaterials(IntStream.range(0, wmbFile.getWmbHeader().getMaterialCount()).mapToObj(i -> parseMaterial(i, wmbFile)).collect(Collectors.toList()));
+        wmbFile.setWmbMeshGroups(IntStream.range(0, wmbFile.getWmbHeader().getMeshGroupCount()).mapToObj(i -> parseMeshGroup(i, wmbFile.getWmbHeader().getMeshGroupOffset())).collect(Collectors.toList()));
+        wmbFile.setWmbMaterials(IntStream.range(0, wmbFile.getWmbHeader().getMaterialCount()).mapToObj(i -> parseMaterial(i, wmbFile.getWmbHeader().getMaterialArrayOffset() )).collect(Collectors.toList()));
 
         return wmbFile;
     }
@@ -101,8 +99,31 @@ public class WMBParser extends Parser {
         return wmbBone;
     }
 
-    public WMBMaterial parseMaterial(int index, WMBFile wmbFile) {
-        setOffset(wmbFile.getWmbHeader().getMaterialArrayOffset() + index * 0x30);
+    public WMBMeshGroup parseMeshGroup(int index, int offset) {
+        setOffset(offset + index * 0x2c);
+
+        WMBMeshGroup wmbMeshGroup = new WMBMeshGroup();
+
+        wmbMeshGroup.setNameOffset(getInt32());
+        wmbMeshGroup.setBoundingBox(IntStream.range(0, 6).mapToObj(group -> getFloat()).collect(Collectors.toList()));
+        wmbMeshGroup.setMaterialIndexArrayOffset(getInt32());
+        wmbMeshGroup.setMaterialIndexArrayCount(getInt32());
+        wmbMeshGroup.setBoneIndexArrayOffset(getInt32());
+        wmbMeshGroup.setBoneIndexArrayCount(getInt32());
+        setOffset(wmbMeshGroup.getNameOffset());
+        wmbMeshGroup.setMeshGroupname(getFixedString(256));
+        setOffset(wmbMeshGroup.getMaterialIndexArrayOffset());
+        wmbMeshGroup.setMaterialIndexArray(IntStream.range(0, wmbMeshGroup.getMaterialIndexArrayCount()).mapToObj(group -> getInt16()).collect(Collectors.toList()));
+        setOffset(wmbMeshGroup.getBoneIndexArrayOffset());
+        wmbMeshGroup.setBoneIndexArray(IntStream.range(0, wmbMeshGroup.getBoneIndexArrayCount()).mapToObj(group -> getInt16()).collect(Collectors.toList()));
+
+        System.out.println(wmbMeshGroup);
+
+        return wmbMeshGroup;
+    }
+
+    public WMBMaterial parseMaterial(int index, int offset) {
+        setOffset(offset + index * 0x30);
 
         WMBMaterial wmbMaterial = new WMBMaterial();
         wmbMaterial.setUnknown1(getInt16());
@@ -128,11 +149,11 @@ public class WMBParser extends Parser {
 
         for (int i = 0; i < wmbMaterial.getTextureNum(); i++) {
             setOffset(wmbMaterial.getTextureOffset() + i * 8);
-            int offset = getInt32();
-            System.out.println(offset);
+            int textureOffset = getInt32();
+            System.out.println(textureOffset);
             String identifier = String.format("%08x", getInt32());
             System.out.println(identifier);
-            setOffset(offset);
+            setOffset(textureOffset);
             String textureTypeName = getFixedString(256);
             System.out.println(textureTypeName);
 
