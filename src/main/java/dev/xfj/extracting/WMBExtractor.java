@@ -1,20 +1,18 @@
 package dev.xfj.extracting;
 
 import dev.xfj.format.dat.DATContent;
-import dev.xfj.format.dat.DATContentInfo;
 import dev.xfj.format.wmb.WMBFile;
 import dev.xfj.format.wmb.WMBMaterial;
 import dev.xfj.format.wta.WTAFile;
 import dev.xfj.format.wtp.WTPFile;
+import dev.xfj.parsing.WTAParser;
 import dev.xfj.parsing.WTPParser;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class WMBExtractor {
@@ -26,8 +24,7 @@ public class WMBExtractor {
         this.dryRun = dryRun;
     }
 
-    public void extract(Path directory, boolean delete) {
-        directory = Path.of(directory.toString().split(".wtp")[0]);
+    public void extract(Path directory, boolean delete) throws IOException {
 
         //if (delete) {
         //    try {
@@ -59,6 +56,12 @@ public class WMBExtractor {
             }
         }
 
+        WTAParser wtaParser = new WTAParser(Paths.get("pl010d", "[976] pl010d.wta"));
+
+
+        for (String textureFile : textureArray) {
+            byte[] texture = getTextureByIdentifier(wtaParser.parse(), textureFile.replace( Paths.get(directory.toString(), "texture").toString() + "\\", ""), Paths.get("pl010d", "[128] pl010d.wtp"));
+        }
 
         //for (int i = 0; i < datFile.getHeader().getFileCount(); i++) {
         //    DATContentInfo datContentInfo = datFile.getFileInfo().get(i);

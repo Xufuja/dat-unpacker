@@ -1,6 +1,7 @@
 package dev.xfj;
 
 import dev.xfj.extracting.DATExtractor;
+import dev.xfj.extracting.WMBExtractor;
 import dev.xfj.format.dat.DATFile;
 import dev.xfj.parsing.DATParser;
 import dev.xfj.parsing.WMBParser;
@@ -21,7 +22,9 @@ public class Application {
             //wtaParser.parse();
 
             WMBParser wmbParser = new WMBParser(Paths.get("pl010d", "[36452768] pl010d.wmb"));
-            wmbParser.parse();
+
+            WMBExtractor wmbExtractor = new WMBExtractor(wmbParser.parse(), true);
+            wmbExtractor.extract(Path.of("pl010d"), false);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
