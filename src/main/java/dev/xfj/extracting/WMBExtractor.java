@@ -24,7 +24,7 @@ public class WMBExtractor {
         this.dryRun = dryRun;
     }
 
-    public void extract(Path directory, boolean delete) throws IOException {
+    public void extract(Path directory, Path wtaPath, Path wtpPath) throws IOException {
 
         //if (delete) {
         //    try {
@@ -56,11 +56,16 @@ public class WMBExtractor {
             }
         }
 
-        WTAParser wtaParser = new WTAParser(Paths.get("pl010d", "[976] pl010d.wta"));
-
+        WTAParser wtaParser = new WTAParser(wtaPath);
+        WTAFile wtaFile = wtaParser.parse();
 
         for (String textureFile : textureArray) {
-            byte[] texture = getTextureByIdentifier(wtaParser.parse(), textureFile.replace( Paths.get(directory.toString(), "texture").toString() + "\\", ""), Paths.get("pl010d", "[128] pl010d.wtp"));
+            String identifier = textureFile.replace(Paths.get(directory.toString(), "texture") + "\\", "");
+            byte[] texture = getTextureByIdentifier(wtaFile, identifier, wtpPath);
+
+            if (texture != null && !dryRun) {
+                extractFile(Path.of(textureFile.replace(identifier, "")), texture, String.format("%1$s.dds", identifier));
+            }
         }
 
         //for (int i = 0; i < datFile.getHeader().getFileCount(); i++) {
@@ -73,8 +78,7 @@ public class WMBExtractor {
         //}
     }
 
-    public void extractFile(Path directory, DATContent datContent, String fileName) {
-        byte[] array = datContent.getContent();
+    public void extractFile(Path directory, byte[] array, String fileName) {
 
         try {
             Files.createDirectories(directory);

@@ -19,7 +19,7 @@ public class WTPParser extends AbstractParser {
     public WTPFile parse() {
         WTPFile wtpFile = new WTPFile();
 
-        getSlice(offset, length);
+        wtpFile.setContent(getSlice(offset, length));
 
         return wtpFile;
     }
