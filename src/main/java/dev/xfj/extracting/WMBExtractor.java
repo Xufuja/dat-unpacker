@@ -1,6 +1,5 @@
 package dev.xfj.extracting;
 
-import dev.xfj.format.dat.DATContent;
 import dev.xfj.format.wmb.WMBFile;
 import dev.xfj.format.wmb.WMBMaterial;
 import dev.xfj.format.wta.WTAFile;
@@ -25,18 +24,6 @@ public class WMBExtractor {
     }
 
     public void extract(Path directory, Path wtaPath, Path wtpPath) throws IOException {
-
-        //if (delete) {
-        //    try {
-        //        Files.walk(directory)
-        //                .sorted(Comparator.reverseOrder())
-        //                .map(Path::toFile)
-        //                .forEach(File::delete);
-        //    } catch (Exception e) {
-        //        //System.out.println(e.getMessage());
-        //    }
-        //}
-
         List<String> textureArray = new ArrayList<>();
 
         for (int i = 0; i < wmbFile.getWmbHeader().getMaterialCount(); i++) {
@@ -67,15 +54,6 @@ public class WMBExtractor {
                 extractFile(Path.of(textureFile.replace(identifier, "")), texture, String.format("%1$s.dds", identifier));
             }
         }
-
-        //for (int i = 0; i < datFile.getHeader().getFileCount(); i++) {
-        //    DATContentInfo datContentInfo = datFile.getFileInfo().get(i);
-        //    DATContent datContent = datFile.getContent().get(i);
-//
-        //    if (!dryRun) {
-        //        extractFile(directory, datContent, String.format("[%1$s] %2$s", datContentInfo.getFileOffset(), datContentInfo.getFileName()));
-        //    }
-        //}
     }
 
     public void extractFile(Path directory, byte[] array, String fileName) {
