@@ -15,16 +15,37 @@ public class Application {
     }
 
     public void run() {
-        //parseAndExtractDAT(Path.of("pl000d.dat"));
-        //parseAndExtractDAT(Path.of("pl000d.dtt"), false);
+        String target = "pl000d";
 
-        File f = new File("pl000d");
-        File[] matchingFiles = f.listFiles((dir, name) -> name.endsWith("wmb") || name.endsWith("wta") || name.endsWith("wtp"));
+        File datLocation = new File(System.getProperty("user.dir"));
+        File[] datFiles = datLocation.listFiles((dir, name) -> name.equals(String.format("%s.dat", target)) || name.equals(String.format("%s.dtt", target)));
+        Path dat = null;
+        Path dtt = null;
+
+        for (File file : datFiles) {
+            if (file.toString().contains("dat") && dat == null) {
+                dat = file.toPath();
+            }
+
+            if (file.toString().contains("dtt") && dtt == null) {
+                dtt = file.toPath();
+            }
+
+            if (dat != null && dtt != null) {
+                break;
+            }
+        }
+
+        parseAndExtractDAT(dat);
+        parseAndExtractDAT(dtt, false);
+
+        File directory = new File(target);
+        File[] sourceFiles = directory.listFiles((dir, name) -> name.endsWith("wmb") || name.endsWith("wta") || name.endsWith("wtp"));
         Path wmb = null;
         Path wta = null;
         Path wtp = null;
 
-        for (File file : matchingFiles) {
+        for (File file : sourceFiles) {
             if (file.toString().contains("wmb")) {
                 wmb = file.toPath();
             }
@@ -36,10 +57,10 @@ public class Application {
             }
         }
 
-        parseAndExtractWMB(Path.of("pl000d"), wmb, wta, wtp);
+        parseAndExtractWMB(Path.of(target), wmb, wta, wtp);
         //parseAndExtractWMB(Paths.get("pl010d", "[36452768] pl010d.wmb"));
     }
-    
+
     public void parseAndExtractDAT(Path path) {
         parseAndExtractDAT(path, true);
     }

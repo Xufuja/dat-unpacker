@@ -20,7 +20,7 @@ public class DATExtractor {
     }
 
     public void extract(Path directory, boolean delete) {
-        directory = directory.toString().contains(".dat") ? Path.of(directory.toString().split(".dat")[0]) : Path.of(directory.toString().split(".dtt")[0]);
+        directory = directory.toString().endsWith(".dat") ? Path.of(directory.toString().split(".dat")[0]) : Path.of(directory.toString().split(".dtt")[0]);
 
         if (delete) {
             try {
