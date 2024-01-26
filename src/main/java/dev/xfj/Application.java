@@ -6,7 +6,6 @@ import dev.xfj.parsing.DATParser;
 import dev.xfj.parsing.WMBParser;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.nio.file.Path;
 
 public class Application {
@@ -15,7 +14,7 @@ public class Application {
     }
 
     public void run() {
-        String target = "pl000d";
+        String target = "pl010d";
 
         File datLocation = new File(System.getProperty("user.dir"));
         File[] datFiles = datLocation.listFiles((dir, name) -> name.equals(String.format("%s.dat", target)) || name.equals(String.format("%s.dtt", target)));
