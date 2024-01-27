@@ -7,6 +7,7 @@ import dev.xfj.parsing.WMBParser;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class Application {
     public Application() {
@@ -18,46 +19,28 @@ public class Application {
 
         File datLocation = new File(System.getProperty("user.dir"));
         File[] datFiles = datLocation.listFiles((dir, name) -> name.equals(String.format("%s.dat", target)) || name.equals(String.format("%s.dtt", target)));
-        Path dat = null;
-        Path dtt = null;
-
-        for (File file : datFiles) {
-            if (file.toString().contains("dat") && dat == null) {
-                dat = file.toPath();
-            }
-
-            if (file.toString().contains("dtt") && dtt == null) {
-                dtt = file.toPath();
-            }
-
-            if (dat != null && dtt != null) {
-                break;
-            }
-        }
+        Path dat = findFile(datFiles, "dat");
+        Path dtt = findFile(datFiles, "dtt");
 
         parseAndExtractDAT(dat);
         parseAndExtractDAT(dtt, false);
 
         File directory = new File(target);
         File[] sourceFiles = directory.listFiles((dir, name) -> name.endsWith("wmb") || name.endsWith("wta") || name.endsWith("wtp"));
-        Path wmb = null;
-        Path wta = null;
-        Path wtp = null;
-
-        for (File file : sourceFiles) {
-            if (file.toString().contains("wmb")) {
-                wmb = file.toPath();
-            }
-            if (file.toString().contains("wta")) {
-                wta = file.toPath();
-            }
-            if (file.toString().contains("wtp")) {
-                wtp = file.toPath();
-            }
-        }
+        Path wmb = findFile(sourceFiles, "wmb");
+        Path wta = findFile(sourceFiles, "wta");
+        Path wtp = findFile(sourceFiles, "wtp");
 
         parseAndExtractWMB(Path.of(target), wmb, wta, wtp);
         //parseAndExtractWMB(Paths.get("pl010d", "[36452768] pl010d.wmb"));
+    }
+
+    private Path findFile(File[] files, String extension) {
+        return Arrays.stream(files)
+                .filter(file -> file.toString().endsWith(extension))
+                .findFirst()
+                .map(File::toPath)
+                .orElse(null);
     }
 
     public void parseAndExtractDAT(Path path) {
